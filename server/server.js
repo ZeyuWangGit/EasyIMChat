@@ -1,10 +1,8 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const app = express();
+const userRouter = require('./user');
 
-app.get('/', function(req, res) {
-    res.send('<h1>hellow world</h1>');
-})
+const app = express();
+app.use('/user',userRouter);
 
 app.listen(9093, function() {
     console.log("Node app start on port 9093");

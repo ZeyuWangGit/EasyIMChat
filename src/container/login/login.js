@@ -15,7 +15,7 @@ class Login extends React.Component {
         return(
             <div>
                 <Logo />
-                <h2>Login Page</h2>
+                
                 <WingBlank>
                     <List>
                         <InputItem>User</InputItem>
