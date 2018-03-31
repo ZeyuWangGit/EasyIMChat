@@ -70,7 +70,7 @@ export function register({username, password, rePassword, userType}) {
     if(!username || !password || !userType) {
         return errorMsg('You must enter username and password!');
     }
-    if (password != rePassword) {
+    if (password !== rePassword) {
         return errorMsg('The password is different to the re-password!');
     }
     return dispatch=>{
@@ -112,7 +112,6 @@ export function login({username, password}){
 }
 
 export function loadData(userinfo){
-    console.log(userinfo)
     return dispatch=>{
         dispatch({
             type: LOAD_DATA,
