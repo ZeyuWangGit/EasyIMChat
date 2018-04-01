@@ -14,8 +14,9 @@ const md5Salt = (pwd) =>{
 }
 Router.get('/list', (req, res) => {
     // User.remove({}, (e,d)=>{});
-    User.find({}, (err, doc)=>{
-        return res.json(doc);
+    const { userType } = req.query;
+    User.find({ userType }, (err, doc)=>{
+        return res.json({code: 0, data: doc});
     });
 });
 Router.post('/login',(req,res)=>{

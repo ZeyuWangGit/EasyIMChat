@@ -16,7 +16,7 @@ class Register extends React.Component {
             username:'',
             password:'',
             rePassword:'',
-            userType: 'leader'
+            userType: 'member'
         }
         this.handleRegister = this.handleRegister.bind(this);
         this.infowindowPopup = this.infowindowPopup.bind(this);
@@ -56,8 +56,8 @@ class Register extends React.Component {
                     </List>
                     <WhiteSpace />
                     <List>
-                        <RadioItem checked={this.state.userType==='leader'} onChange={()=>this.handleChange('userType','leader')}>Leader</RadioItem>
                         <RadioItem checked={this.state.userType==='member'} onChange={()=>this.handleChange('userType','member')}>Member</RadioItem>
+                        <RadioItem checked={this.state.userType==='leader'} onChange={()=>this.handleChange('userType','leader')}>Administrator</RadioItem>
                     </List>
                     <WhiteSpace />
                     <List>

@@ -11,6 +11,7 @@ import Register from './container/register/register';
 import AuthRouter from './components/AuthRouter/AuthRouter';
 import LeaderInfo from './container/leaderinfo/LeaderInfo';
 import MemberInfo from './container/memberinfo/MemberInfo';
+import DashBoard from './components/dashBoard/DashBoard';
 import './config';
 
 import './index.css';
@@ -32,6 +33,7 @@ ReactDOM.render(
                     <Route path='/memberinfo' component={MemberInfo}></Route>
                     <Route path='/login' component={Login}></Route>
                     <Route path='/register' component={Register}></Route>
+                    <Route component={DashBoard}></Route>
                 </Switch>                
             </div>
         </BrowserRouter>
