@@ -50,7 +50,8 @@ const errorMsg = (message) => {
     }
 }
 
-const authSuccess = (data) => {
+const authSuccess = (info) => {
+    const {password, ...data} = info;
     return {
         type: AUTH_SUCCESS,
         payload: data

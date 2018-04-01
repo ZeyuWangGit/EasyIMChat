@@ -10,6 +10,7 @@ import Login from './container/login/login';
 import Register from './container/register/register';
 import AuthRouter from './components/AuthRouter/AuthRouter';
 import LeaderInfo from './container/leaderinfo/LeaderInfo';
+import MemberInfo from './container/memberinfo/MemberInfo';
 import './config';
 
 import './index.css';
@@ -28,6 +29,7 @@ ReactDOM.render(
                 <AuthRouter></AuthRouter>
                 <Switch>
                     <Route path='/leaderinfo' component={LeaderInfo}></Route>
+                    <Route path='/memberinfo' component={MemberInfo}></Route>
                     <Route path='/login' component={Login}></Route>
                     <Route path='/register' component={Register}></Route>
                 </Switch>                
