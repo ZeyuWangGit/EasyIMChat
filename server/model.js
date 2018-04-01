@@ -12,6 +12,7 @@ const models = {
         'description': {type: String},
         'group': {type: String},
         'department': {type: String},
+        'project': {type: String},
 
     },
     chat: {

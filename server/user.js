@@ -53,7 +53,21 @@ Router.post('/register', (req, res)=>{
     })
 });
 
+Router.post('/update',(req,res)=>{
+    const {userid} = req.cookies;
+    if(!userid) {
+        return res.json({code: 1});    
+    }
+    const body = req.body;
+    User.findByIdAndUpdate(userid, body, function (err, doc) {
+        const data = Object.assign({},{
+            username: doc.username,
+            userType: doc.userType
+        }, body)
+        return res.json({code:0, data})
+    })
 
+})
 
 Router.get('/info', function (req, res) {
     const {userid} = req.cookies;
