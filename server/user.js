@@ -5,6 +5,7 @@ const util = require('utility');
 const Router = express.Router();
 const Model = require('./model');
 const User = Model.getModel('user');
+const Chat = Model.getModel('chat');
 const _filter = {'password': 0, '__v': 0};
 
 
@@ -86,6 +87,15 @@ Router.get('/info', function (req, res) {
     })
     
 });
+
+Router.get('/getmessagelist', function (req, res) {
+    const { userid } = req.cookies;
+    Chat.find({},function (err, doc) {
+        if(!err){
+            return res.json({code: 0, messages: doc})
+        }
+    })
+})
 
 module.exports = Router;
 
