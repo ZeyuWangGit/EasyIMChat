@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getUserList } from '../../redux/chat.redux';
+import UserCard from '../UserCard/UserCard';
 
+@connect(
+    state=>state.chat,
+    {getUserList}
+)
 class Administrator extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  };
+    componentDidMount() {
+        this.props.getUserList('leader');
     }
     render() {
-        return (
-            <div>s</div>
-        );
+        return (<UserCard userList={this.props.userlist}></UserCard>);
     }
 }
 

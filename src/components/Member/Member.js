@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-import { Card, WingBlank, WhiteSpace } from 'antd-mobile';
 import { connect } from 'react-redux';
 import { getUserList } from '../../redux/chat.redux';
+import UserCard from '../UserCard/UserCard';
 
 @connect(
     state=>state.chat,
@@ -13,26 +12,7 @@ class Member extends Component {
         this.props.getUserList('member');
     }
     render() {
-        return (
-            
-            <WingBlank>
-                {
-                    this.props.userlist.map(v=>(
-                        <Card key={v._id}>
-                            <Card.Header title={v.username} extra={`Group:${v.group} Department:${v.department}`}></Card.Header>
-                            <Card.Body>
-                                {v.description.split('\n').map(v=>(
-                                    <div key={v}>{v}</div>
-                                ))}
-                            </Card.Body>
-
-                        </Card>
-                        
-                    )    
-                    )
-                }
-            </WingBlank>
-        );
+        return (<UserCard userList={this.props.userlist}></UserCard>);
     }
 }
 

@@ -1,6 +1,10 @@
 
 
-export function getRedirectPath({userType}){
-    let url = (userType==='leader')?'/leaderinfo':'/memberinfo';
+export function getRedirectPath(data){
+    const {userType, department} = data;
+    let url = (userType==='leader')?'/leader':'/member';
+    if (!department){
+        url += 'info';
+    }
     return url;
 }

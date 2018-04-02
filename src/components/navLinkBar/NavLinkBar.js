@@ -22,6 +22,7 @@ class NavLinkBar extends Component {
                         <TabBar.Item
                             title={v.text}
                             key={v.path}
+                            noRenderContent
                             icon={
                                 <div style={{
                                   width: '22px',

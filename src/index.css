@@ -13,6 +13,12 @@ body {
   top: 0;
   width: 100%;
 }
+.am-tab-bar {
+  position: fixed;
+  bottom: 0;
+  height: 50px;
+}
 .page-content{
   padding: 45px 5px;
 }
+
