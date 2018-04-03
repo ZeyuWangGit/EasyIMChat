@@ -4,7 +4,7 @@ A simple IM Web Application build with React, Redux, React-Router, Node.js, Sock
 
 ### Prerequisite
 
-You should make sure you have already installed the **Node** and **NPM**
+#### You should make sure you have already installed the **Node** and **NPM**
 ---
 
 ## Install
