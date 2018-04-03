@@ -7,15 +7,23 @@ import Member from '../Member/Member';
 import Personal from '../Me/Me';
 import Message from '../Message/Message';
 import Administrator from '../Administrator/Administrator';
+import { getMessageList, receiveMessage } from '../../redux/message.redux';
 
 @connect(
-    state=>state
+    state=>state,
+    { getMessageList, receiveMessage }
 )
 
 class DashBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {  };
+    }
+    componentDidMount() {
+        if(!this.props.messageRedux.chatMessage.length){
+            this.props.getMessageList();
+            this.props.receiveMessage();
+        }
     }
     render() {
         const user = this.props.user;

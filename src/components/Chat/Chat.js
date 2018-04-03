@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import socketIO from 'socket.io-client';
-import { List, InputItem, Button, NavBar } from 'antd-mobile';
+import { List, InputItem, Button, NavBar, Icon } from 'antd-mobile';
 import { connect } from 'react-redux';
-import { getMessageList, sendMessage, receiveMessage } from '../../redux/message.redux';
+import { sendMessage, getMessageList, receiveMessage } from '../../redux/message.redux';
 
 
 const socket = socketIO('ws://localhost:9093');
 @connect(
     state=>state,
-    { getMessageList, sendMessage, receiveMessage }
+    { sendMessage, getMessageList, receiveMessage }
 )
 class ChatComponent extends Component {
     constructor(props) {
@@ -21,8 +21,11 @@ class ChatComponent extends Component {
          this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        this.props.getMessageList();
-        this.props.receiveMessage();
+        if(!this.props.messageRedux.chatMessage.length){
+            this.props.getMessageList();
+            this.props.receiveMessage();
+        }
+        
     }
     handleInput(value){
         this.setState({
@@ -40,20 +43,25 @@ class ChatComponent extends Component {
     }
     
     render() {
-        const user = this.props.match.params.username;
-        const chatid = [this.props.user._id, user].sort().join('-')
+        const userid = this.props.match.params.username;
+        const chatid = [this.props.user._id, userid].sort().join('-');
+        const users = this.props.messageRedux.users;
+        if(!users[userid]){
+            return null;
+        }
+        const chatMessages = this.props.messageRedux.chatMessage.filter(v=>v.chatid===chatid);
         return (
             <div id='chat-page'>
-                <NavBar mode='light'>
+                <NavBar mode='light' icon={<Icon type="left" />} onLeftClick={()=>{this.props.history.goBack()}}>
                     {
-                        user
+                        `${users[userid].name} (${users[userid].group} in ${users[userid].department})`
                     }
                 </NavBar>
 
                 {
-                    this.props.messageRedux.chatMessage.map(v=>{
-                        if(v.chatid===chatid){
-                            return v.from===user?(
+                    chatMessages.map(v=>{
+                        
+                            return v.from===userid?(
                                 <List key={v._id}>
                                     <List.Item>{v.content}</List.Item>
                                 </List>
@@ -62,7 +70,7 @@ class ChatComponent extends Component {
                                     <List.Item className='chat-me' extra={'me'}>{v.content}</List.Item>
                                 </List>
                             )
-                        }
+                        
                     })
                 }
                 <div className="stick-footer">

@@ -90,11 +90,18 @@ Router.get('/info', function (req, res) {
 
 Router.get('/getmessagelist', function (req, res) {
     const { userid } = req.cookies;
-    Chat.find({},function (err, doc) {
-        if(!err){
-            return res.json({code: 0, messages: doc})
-        }
+    User.find({},function(e, userdoc){
+        let users = {}
+        userdoc.forEach(v=>{
+            users[v._id]={name: v.username, department: v.department, group: v.group}
+        })
+        Chat.find({'$or':[{from: userid}, {to: userid}]},function (err, doc) {
+            if(!err){
+                return res.json({code: 0, messages: doc, users: users})
+            }
+        })
     })
+    
 })
 
 module.exports = Router;

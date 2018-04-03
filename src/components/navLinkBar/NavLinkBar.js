@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { TabBar } from 'antd-mobile';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 @withRouter
+@connect(
+    state=>state.messageRedux
+)
 class NavLinkBar extends Component {
     static propTypes = {
         data: propTypes.array.isRequired
@@ -13,6 +17,7 @@ class NavLinkBar extends Component {
         this.state = {  };
     }
     render() {
+        
         const navList = this.props.data.filter(v=>!v.hide);
         const { pathname } = this.props.location;
         return (
@@ -23,6 +28,7 @@ class NavLinkBar extends Component {
                             title={v.text}
                             key={v.path}
                             noRenderContent
+                            badge={v.path==='/message'?this.props.unread:0}
                             icon={
                                 <div style={{
                                   width: '22px',

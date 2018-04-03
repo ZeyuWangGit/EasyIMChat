@@ -11,6 +11,7 @@ const MSG_READ = 'MSG_READ';
 const initState = {
     chatMessage:[],
     unread:0,
+    users: {}
 }
 
 export function messageRedux(state=initState, action){
@@ -18,14 +19,16 @@ export function messageRedux(state=initState, action){
         case MSG_LIST:
             return {
                 ...state,
-                chatMessage: action.payload,
-                unread: action.payload.filter(v=>!v.read).length
+                chatMessage: action.payload.message,
+                users: action.payload.users,
+                unread: action.payload.message.filter(v=>!v.read&&v.to===action.payload.userid).length
             }
         case MSG_RECV:
+            console.log(action.payload)
             return {
                 ...state,
-                chatMessage: [...state.chatMessage, action.payload],
-                unread: state.unread+1
+                chatMessage: [...state.chatMessage, action.payload.data],
+                unread: state.unread+(action.payload.data.to===action.payload.userid?1:0)
             }
         case MSG_READ:
         default:
@@ -33,19 +36,20 @@ export function messageRedux(state=initState, action){
     }
 }
 
-const messageList = (message) => {
+const messageList = (message, users, userid) => {
     return {
         type: MSG_LIST,
-        payload: message
+        payload: { message, users, userid }
     }
 }
 
 export function getMessageList(){
-    return dispatch=>{
+    return (dispatch, getState)=>{
         axios.get('/user/getmessagelist')
             .then(res=>{
+                const userid = getState().user._id;
                 if(res.status===200 && res.data.code===0) {
-                    dispatch(messageList(res.data.messages))
+                    dispatch(messageList(res.data.messages, res.data.users, userid))
                 } else {
 
                 }
@@ -59,17 +63,17 @@ export function sendMessage({from, to ,message}){
     }
     
 }
-const messageReceive = (data)=>{
+const messageReceive = (data, userid)=>{
     return {
         type: MSG_RECV,
-        payload: data
+        payload: {data, userid}
     }
 }
 export function receiveMessage() {
-    return dispatch=>{
+    return (dispatch, getState)=>{
         socket.on('receiveMessage', function (data) {
             console.log(data)
-            dispatch(messageReceive(data))
+            dispatch(messageReceive(data, getState().user._id))
         })
     }
 }

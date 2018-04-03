@@ -8,3 +8,7 @@ export function getRedirectPath(data){
     }
     return url;
 }
+
+export function getChatId(from, to){
+    return [from, to].sort().join('-');
+}
