@@ -24,13 +24,21 @@ export function messageRedux(state=initState, action){
                 unread: action.payload.message.filter(v=>!v.read&&v.to===action.payload.userid).length
             }
         case MSG_RECV:
-            console.log(action.payload)
             return {
                 ...state,
                 chatMessage: [...state.chatMessage, action.payload.data],
                 unread: state.unread+(action.payload.data.to===action.payload.userid?1:0)
             }
         case MSG_READ:
+            const {from, to ,num} = action.payload;
+            return {
+                ...state,
+                chatMessage: state.chatMessage.map(v=>{
+                    v.read = from===v.from?true:v.read;
+                    return v;
+                }),
+                unread: state.unread-num
+            }
         default:
             return state;
     }
@@ -75,5 +83,23 @@ export function receiveMessage() {
             console.log(data)
             dispatch(messageReceive(data, getState().user._id))
         })
+    }
+}
+function messageRead(from,to,num) {
+    return {
+        type: MSG_READ,
+        payload: {from, to ,num}
+    }
+}
+export function readMessage(from){
+    return (dispatch, getState)=>{
+        axios.post('/user/readMessage', { from })
+            .then(res=>{
+                console.log(from)
+                const userid = getState().user._id;
+                if (res.status===200&& res.data.code===0){
+                    dispatch(messageRead(userid, from, res.data.code))
+                }
+            })
     }
 }

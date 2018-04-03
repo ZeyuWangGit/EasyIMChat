@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import socketIO from 'socket.io-client';
 import { List, InputItem, Button, NavBar, Icon } from 'antd-mobile';
 import { connect } from 'react-redux';
-import { sendMessage, getMessageList, receiveMessage } from '../../redux/message.redux';
+import { sendMessage, getMessageList, receiveMessage, readMessage } from '../../redux/message.redux';
 
 
 const socket = socketIO('ws://localhost:9093');
 @connect(
     state=>state,
-    { sendMessage, getMessageList, receiveMessage }
+    { sendMessage, getMessageList, receiveMessage, readMessage }
 )
 class ChatComponent extends Component {
     constructor(props) {
@@ -26,6 +26,10 @@ class ChatComponent extends Component {
             this.props.receiveMessage();
         }
         
+    }
+    componentWillUnmount(){
+        const to = this.props.match.params.username;
+        this.props.readMessage(to);
     }
     handleInput(value){
         this.setState({

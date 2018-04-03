@@ -71,6 +71,17 @@ Router.post('/update',(req,res)=>{
 
 })
 
+Router.post('/readMessage',function (req, res) {
+    const {userid} = req.cookies;
+    const { from } = req.body;
+    Chat.update({from, to:userid}, {'$set':{read:true}},{'multi': true},function (err, doc) {
+        if (!err) {
+            return res.json({code:0, num: doc.nModified})
+        }
+        return res.json({code: 1, message: 'failed'})
+    });
+
+})
 Router.get('/info', function (req, res) {
     const {userid} = req.cookies;
     if(!userid) {
